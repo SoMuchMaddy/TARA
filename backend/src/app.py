@@ -1,17 +1,55 @@
+# Import FastAPI, which creates the backend web application
+# Depends is used for dependency injection, which lets FastAPI automatically
+# provide things like database sessions to route functions.
 from fastapi import FastAPI, Depends
+
+# BaseModel is used to define the shape of request and response data. 
+# These are Pydantic models, which validate incoming JSON data.
 from pydantic import BaseModel
+
+# SQLAlchemy imports for connecting to a database and defining tables.
 from sqlalchemy import create_engine, Column, Integer, String
+
+# sessionmaker creates database sessions.
+# declarative_base is used to create SQLAlchemy model classes.
+# Sesssion is used for type hints.
 from sqlalchemy.orm import sessionmaker, declarative_base, Session
+
+# HTTPException lets us return proper HTTP error responses,
+# such as 404 Not Found.
 from fastapi import HTTPException
+
+# CORS middleware allows the frontend to make requests to this backend,
+# even if the frontend is running on a different port or domain.
 from fastapi.middleware.cors import CORSMiddleware
 
-DATABASE_URL = "sqlite:///./tara.db"
+# This is the database connection URL.
+# sqlite:/// means we are using SQLite.
+# ./tara.db means the database file will be created in the current project folder.
+import os
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATABASE_URL = f"sqlite:///{os.path.join(BASE_DIR, 'tara.db')}"
+
+# Create the SQLAlchemy engine.
+# The engine is the main connection point between Python and the database.
+# 
+# check_same_thread=False is needed for SQLite when using FastAPI,
+# because requests may be handled across different threads.
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+
+# Create a SessionLocal class.
+# Each instance of SessionLocal will be an individual database session.
+# A session is used to query, add, update, and delete database records. 
 SessionLocal = sessionmaker(bind=engine)
+
+# Create a Base class for SQLAlchemy models.
+# Database table classes will inherit from this Base.
 Base = declarative_base()
 
-
+# This class defines the actual SQL database table for cats.
+# It is not the same as a Pydantic model.
+# This model controls how cat data is stored in tara.db.
 class CatTable(Base):
     __tablename__ = "cats"
 
@@ -19,10 +57,12 @@ class CatTable(Base):
     name = Column(String, index=True)
     status = Column(String)
 
-
+# Create all database tables defined by classes that inherit from Base.
+# If the cats table does not already exist, this line creates it.
+# If it already exists, SQLAlchemy leaves it alone.
 Base.metadata.create_all(bind=engine)
 
-
+# 
 def get_db():
     db = SessionLocal()
     try:
