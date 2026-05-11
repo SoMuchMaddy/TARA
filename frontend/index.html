@@ -1,76 +1,221 @@
 <!DOCTYPE html>
+<!-- 
+    Tells the browser this document uses modern HTML5.
+-->
+
 <html lang="en">
+<!-- 
+    Root element of the webpage.
+    lang="en" helps browsers and screen readers know the page language is English.
+-->
+
 <head>
+    <!-- Character encoding so special characters display correctly -->
     <meta charset="UTF-8">
+
+    <!-- 
+        Makes the page scale properly on phones/tablets.
+        Important for responsive design.
+    -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Text shown in the browser tab -->
     <title>TARA Frontend</title>
+
+    <!-- 
+        Internal CSS styling.
+        This controls the visual appearance of the page.
+    -->
     <style>
+
+    /* 
+        Styles applied to the entire page body.
+    */
     body {
+        /* Main font used across the site */
         font-family: Arial, sans-serif;
+
+        /* Dark navy background */
         background-color: #0f172a;
+
+        /* Light gray text color */
         color: #e5e7eb;
+
+        /* Space around the edges of the page */
         padding: 20px;
     }
 
+    /* 
+        Styles for all h1 and h2 headings.
+    */
     h1, h2 {
+        /* Pink/red accent color */
         color: #f43f5e;
     }
 
+    /* 
+        Styles for all input fields.
+    */
     input {
+        /* Space around each input */
         margin: 5px;
+
+        /* Space inside the input box */
         padding: 8px;
+
+        /* Rounded corners */
         border-radius: 4px;
+
+        /* Removes default border */
         border: none;
     }
 
+    /* 
+        Styles for all buttons.
+    */
     button {
         margin: 5px;
         padding: 8px 12px;
+
+        /* Rounded corners */
         border-radius: 4px;
+
+        /* Removes default border */
         border: none;
+
+        /* Changes cursor to hand when hovering */
         cursor: pointer;
+
+        /* Dark button background */
         background-color: #1e293b;
+
+        /* White text */
         color: white;
     }
 
+    /* 
+        Changes button appearance when mouse hovers over it.
+    */
     button:hover {
         background-color: #334155;
     }
 
+    /* 
+        Removes default bullet points and spacing from the list.
+    */
     ul {
         list-style: none;
         padding: 0;
     }
 
+    /* 
+        Styles each cat entry in the list.
+    */
     li {
         margin: 8px 0;
         padding: 10px;
+
+        /* Dark card background */
         background-color: #1e293b;
+
         border-radius: 6px;
+
+        /* 
+            Flexbox layout:
+            Places text on left and buttons on right.
+        */
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
+    /* 
+        Adds spacing between buttons inside each list item.
+    */
     li button {
         margin-left: 10px;
     }
 </style>
 </head>
+
 <body>
+
+    <!-- 
+        Main page title shown at the top.
+    -->
     <h1>TARA - Cats</h1>
 
+    <!-- 
+        Form section title.
+        id="formTitle" allows JavaScript to change this later.
+        Example:
+        "Add Cat" -> "Edit Cat"
+    -->
     <h2 id="formTitle">Add Cat</h2>
+
+    <!-- 
+        Form used to submit cat information.
+        JavaScript listens for submissions from this form.
+    -->
     <form id="catForm">
-        <input type="text" id="nameInput" placeholder="Cat name" required>
-        <input type="text" id="statusInput" placeholder="Status" required>
-        <button type="submit" id="submitBtn">Add Cat</button>
+
+        <!-- 
+            Input for the cat's name.
+            required means the user cannot submit an empty value.
+        -->
+        <input
+            type="text"
+            id="nameInput"
+            placeholder="Cat name"
+            required
+        >
+
+        <!-- 
+            Input for the cat's status.
+            Example statuses:
+            available
+            foster
+            adopted
+            medical
+        -->
+        <input
+            type="text"
+            id="statusInput"
+            placeholder="Status"
+            required
+        >
+
+        <!-- 
+            Button used to submit the form.
+            id="submitBtn" allows JavaScript to modify the button text later.
+        -->
+        <button type="submit" id="submitBtn">
+            Add Cat
+        </button>
     </form>
 
+    <!-- Section title for the displayed cat list -->
     <h2>Cat List</h2>
-    <button id="loadCatsBtn">Load Cats</button>
+
+    <!-- 
+        Button that loads cat data from the backend API.
+        JavaScript will attach an event listener to this button.
+    -->
+    <button id="loadCatsBtn">
+        Load Cats
+    </button>
+
+    <!-- 
+        Empty unordered list.
+        JavaScript dynamically inserts cat entries here.
+    -->
     <ul id="catList"></ul>
 
+    <!-- 
+        Links the external JavaScript file to this HTML page.
+        script.js contains the frontend logic.
+    -->
     <script src="script.js"></script>
+
 </body>
 </html>
